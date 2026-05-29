@@ -3,9 +3,15 @@ settings:
   teleport-delay-seconds: 3
   cancel-teleport-on-move: true
   allow-cross-world: true
-  gui-title: "&8Player Warps"
-  manage-gui-title: "&8Your Player Warps"
   default-icon: "ENDER_PEARL"
+
+  # Extra commands that open the public Player Warps GUI.
+  # These are handled by the plugin, so you can change them and run /pwarp reload.
+  # Do not include pwarp here because that is already the main command.
+  gui-aliases:
+    - warps
+    - playerwarps
+    - pwarps
 
 costs:
   enabled: true
@@ -20,7 +26,7 @@ messages:
   prefix: "&#8B5E3C&lPlayerWarps &8» &f"
   no-permission: "&cYou do not have permission."
   player-only: "&cOnly players can use this command."
-  reloaded: "&aReloaded config and warps."
+  reloaded: "&aReloaded config, GUI, and warps."
   usage-set: "&cUsage: /pwarp set <name>"
   usage-warp: "&cUsage: /pwarp <name>"
   usage-delete: "&cUsage: /pwarp delete <name>"
