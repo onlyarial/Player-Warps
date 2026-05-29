@@ -24,7 +24,7 @@ A simple Paper 1.21.11 player warps plugin with item-only creation costs.
 The jar will be in:
 
 ```text
-build/libs/PlayerWarps-1.0.0.jar
+build/libs/PlayerWarps-1.X.X.jar
 ```
 
 ## Config notes
