@@ -8,7 +8,7 @@ A simple Paper 1.21.11 player warps plugin with item-only creation costs.
 - `/pwarp set <name>` create a warp
 - `/pwarp <name>` teleport to a warp
 - `/pwarp delete <name>` delete your warp
-- `/pwarp rename <old> <new>` rename your warp
+- `/pwarp rename <old> <new>` rename your warp (hexadecimal, & unicode supported)
 - `/pwarp seticon <name>` set the warp icon from the item in your hand
 - `/pwarp manage` manage your own warps
 - Item-only warp creation costs
