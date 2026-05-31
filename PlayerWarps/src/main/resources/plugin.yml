@@ -1,0 +1,22 @@
+name: PlayerWarps
+version: ${version}
+main: com.oncearial.playerwarps.PlayerWarps
+api-version: '1.21'
+author: OnceArial
+folia-supported: false
+commands:
+  pwarp:
+    description: Player warps main command
+    usage: /pwarp
+    aliases: [pw, playerwarp, playerwarps]
+permissions:
+  playerwarps.use:
+    default: true
+  playerwarps.set:
+    default: true
+  playerwarps.delete:
+    default: true
+  playerwarps.gui:
+    default: true
+  playerwarps.admin:
+    default: op

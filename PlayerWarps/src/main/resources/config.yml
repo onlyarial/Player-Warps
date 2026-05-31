@@ -1,0 +1,48 @@
+settings:
+  max-warps-per-player: 3
+  max-warp-name-length: 32
+  teleport-delay-seconds: 3
+  cancel-teleport-on-move: true
+  allow-cross-world: true
+  default-icon: "ENDER_PEARL"
+
+  # Extra commands that open the public Player Warps GUI.
+  # These are handled by the plugin, so you can change them and run /pwarp reload.
+  # Do not include pwarp here because that is already the main command.
+  gui-aliases:
+    - warps
+    - playerwarps
+    - pwarps
+
+costs:
+  enabled: true
+  # Costs are item-only. No Vault/economy hook.
+  create-warp:
+    - material: DIAMOND
+      amount: 3
+    - material: EXPERIENCE_BOTTLE
+      amount: 16
+
+messages:
+  prefix: "&#8B5E3C&lPlayerWarps &8» &f"
+  no-permission: "&cYou do not have permission."
+  player-only: "&cOnly players can use this command."
+  reloaded: "&aReloaded config, GUI, and warps."
+  usage-set: "&cUsage: /pwarp set <name>"
+  usage-warp: "&cUsage: /pwarp <name>"
+  usage-delete: "&cUsage: /pwarp delete <name>"
+  usage-rename: "&cUsage: /pwarp rename <oldName> <newName> &7(Use &e| &7between names if they contain spaces.)"
+  warp-created: "&aCreated warp &e%warp%&a."
+  warp-deleted: "&aDeleted warp &e%warp%&a."
+  warp-renamed: "&aRenamed &e%old% &ato &e%new%&a."
+  warp-not-found: "&cThat warp does not exist."
+  warp-exists: "&cA warp with that name already exists."
+  invalid-name: "&cWarp names can use spaces, Unicode, & color codes, and &#RRGGBB hex colors. The visible name is too long or empty."
+  not-owner: "&cYou do not own that warp."
+  limit-reached: "&cYou have reached your player warp limit."
+  cost-missing: "&cYou need: &e%cost% &cto create a warp."
+  cost-taken: "&aCost paid: &e%cost%&a."
+  teleport-starting: "&aTeleporting to &e%warp% &ain %seconds%s. Do not move."
+  teleport-cancelled: "&cTeleport cancelled."
+  teleported: "&aTeleported to &e%warp%&a."
+  no-warps: "&cThere are no player warps yet."
