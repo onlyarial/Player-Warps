@@ -18,5 +18,11 @@ permissions:
     default: true
   playerwarps.gui:
     default: true
+  playerwarps.favorite:
+    default: true
+  playerwarps.description:
+    default: true
+  playerwarps.setfeatured:
+    default: true
   playerwarps.admin:
     default: op

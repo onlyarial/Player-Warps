@@ -1,26 +1,40 @@
 settings:
   max-warps-per-player: 3
+  max-warp-name-length: 32
   teleport-delay-seconds: 3
   cancel-teleport-on-move: true
   allow-cross-world: true
   default-icon: "ENDER_PEARL"
 
   # Extra commands that open the public Player Warps GUI.
-  # These are handled by the plugin, so you can change them and run /pwarp reload.
-  # Do not include pwarp here because that is already the main command.
   gui-aliases:
     - warps
     - playerwarps
     - pwarps
 
+# Rename worlds in the GUI lore.
+# Example: the real world folder "world_2" will show as "Pod".
+world-naming:
+  - world: Spawn
+  - world_nether: Nether
+  - world_the_end: The End
+  - world_2: Pod
+
 costs:
   enabled: true
-  # Costs are item-only. No Vault/economy hook.
   create-warp:
     - material: DIAMOND
       amount: 3
     - material: EXPERIENCE_BOTTLE
       amount: 16
+
+  # Cost to run /pwarp setfeatured <name>.
+  # Admins with playerwarps.admin bypass this cost.
+  featured-cost:
+    - material: DIAMOND
+      amount: 16
+    - material: EXPERIENCE_BOTTLE
+      amount: 32
 
 messages:
   prefix: "&#8B5E3C&lPlayerWarps &8» &f"
@@ -30,13 +44,16 @@ messages:
   usage-set: "&cUsage: /pwarp set <name>"
   usage-warp: "&cUsage: /pwarp <name>"
   usage-delete: "&cUsage: /pwarp delete <name>"
-  usage-rename: "&cUsage: /pwarp rename <oldName> <newName>"
+  usage-rename: "&cUsage: /pwarp rename <oldName> <newName> &7Example: &e/pwarp rename My-Warp &#ff66ccThis-Is-A-Warp"
+  usage-favorite: "&cUsage: /pwarp favorite <name>"
+  usage-description: "&cUsage: /pwarp desc <name> <description>"
+  usage-setfeatured: "&cUsage: /pwarp setfeatured <name>"
   warp-created: "&aCreated warp &e%warp%&a."
   warp-deleted: "&aDeleted warp &e%warp%&a."
   warp-renamed: "&aRenamed &e%old% &ato &e%new%&a."
   warp-not-found: "&cThat warp does not exist."
   warp-exists: "&cA warp with that name already exists."
-  invalid-name: "&cWarp names can only use letters, numbers, underscores, and dashes. Max 16 characters."
+  invalid-name: "&cWarp names can use uppercase letters, spaces, Unicode, & color codes, and &#RRGGBB hex colors. The visible name is too long or empty."
   not-owner: "&cYou do not own that warp."
   limit-reached: "&cYou have reached your player warp limit."
   cost-missing: "&cYou need: &e%cost% &cto create a warp."
@@ -45,3 +62,10 @@ messages:
   teleport-cancelled: "&cTeleport cancelled."
   teleported: "&aTeleported to &e%warp%&a."
   no-warps: "&cThere are no player warps yet."
+  favorite-added: "&aAdded &e%warp% &ato your favorites."
+  favorite-removed: "&cRemoved &e%warp% &cfrom your favorites."
+  featured-cost-missing: "&cYou need: &e%cost% &cto feature a warp."
+  featured-cost-taken: "&aFeatured cost paid: &e%cost%&a."
+  description-set: "&aUpdated description for &e%warp%&a."
+  featured-set: "&aSet &e%warp% &aas a featured warp."
+  featured-already: "&e%warp% &cis already featured."

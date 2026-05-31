@@ -8,12 +8,25 @@
 # 36 37 38 39 40 41 42 43 44
 # 45 46 47 48 49 50 51 52 53
 
+placeholders:
+  favorite-star: "&e★ "
+  no-description: "&7No description set."
+
 browse:
   title: "&ePlayerWarps"
   size: 54
 
-  # These slots are where player warp icons appear.
-  # This layout matches the screenshot: top/bottom borders, warps in the open middle area.
+  # Featured warps use these 6 bottom side slots.
+  # If a slot has no featured warp yet, the purple Featured Panel item below is shown.
+  featured:
+    slots:
+      - 45
+      - 46
+      - 47
+      - 51
+      - 52
+      - 53
+
   warp-slots:
     - 9
     - 10
@@ -54,21 +67,37 @@ browse:
 
   warp-item:
     # The material is the warp's saved icon from /pwarp seticon.
-    name: "&e%warp%"
+    name: "%favorite_star%&e%warp%"
     lore:
+      - "%description%"
+      - ""
       - "&7Owner: &f%owner%"
+      - "&7Visits: &f%visits%"
       - "&7World: &f%world%"
       - "&7Location: &f%x%, %y%, %z%"
       - ""
-      - "&eClick to teleport"
+      - "&eLeft-click: Teleport"
+      - "&eRight-click: Favorite"
 
   navigation:
+    close:
+      slot: 48
+      material: BARRIER
+      name: "&cClose"
+      lore:
+        - "&7Close this menu."
     previous:
       slot: 48
       material: BLACK_DYE
       name: "&ePrevious Page"
       lore:
         - "&7Go to page &f%previous_page%&7."
+    page:
+      slot: 49
+      material: PAPER
+      name: "&ePage %page_display%"
+      lore:
+        - "&7Page &f%page_display% &7of &f%total_pages%&7."
     next:
       slot: 50
       material: BLACK_DYE
@@ -97,9 +126,11 @@ browse:
         - "&7Use &f/pwarp set <name> &7to create one."
       slots:
         - 4
-    bottom-border:
-      material: GRAY_STAINED_GLASS_PANE
-      name: " "
+    featured-panels:
+      material: PURPLE_STAINED_GLASS_PANE
+      name: "&dFeatured Panel"
+      lore:
+        - "&7Buy for &f%featured_cost%&7."
       slots:
         - 45
         - 46
@@ -107,13 +138,6 @@ browse:
         - 51
         - 52
         - 53
-    page:
-      material: PAPER
-      name: "&ePage &f%page_display%&7/&f%total_pages%"
-      lore:
-        - "&7Paper displays the current page."
-      slots:
-        - 49
 
 manage:
   title: "&eYour PlayerWarps"
@@ -158,9 +182,12 @@ manage:
     - 44
 
   warp-item:
-    name: "&e%warp%"
+    name: "%favorite_star%&e%warp%"
     lore:
+      - "%description%"
+      - ""
       - "&7Owner: &f%owner%"
+      - "&7Visits: &f%visits%"
       - "&7World: &f%world%"
       - "&7Location: &f%x%, %y%, %z%"
       - ""
@@ -168,12 +195,24 @@ manage:
       - "&cRight-click: Delete"
 
   navigation:
+    close:
+      slot: 48
+      material: BARRIER
+      name: "&cBack"
+      lore:
+        - "&7Close this menu."
     previous:
       slot: 48
       material: BLACK_DYE
       name: "&ePrevious Page"
       lore:
         - "&7Go to page &f%previous_page%&7."
+    page:
+      slot: 49
+      material: PAPER
+      name: "&ePage %page_display%"
+      lore:
+        - "&7Page &f%page_display% &7of &f%total_pages%&7."
     next:
       slot: 50
       material: BLACK_DYE
@@ -212,10 +251,3 @@ manage:
         - 51
         - 52
         - 53
-    page:
-      material: PAPER
-      name: "&ePage &f%page_display%&7/&f%total_pages%"
-      lore:
-        - "&7Paper displays the current page."
-      slots:
-        - 49

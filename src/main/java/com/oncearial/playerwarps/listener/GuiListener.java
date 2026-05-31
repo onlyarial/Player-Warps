@@ -40,6 +40,10 @@ public class GuiListener implements Listener {
         int nextSlot = plugin.guiConfig().getInt(base + ".navigation.next.slot", -1);
 
         if (slot == previousSlot) {
+            if (holder.page() <= 0) {
+                player.closeInventory();
+                return;
+            }
             if (holder.type() == WarpGuiHolder.Type.BROWSE) plugin.warpGui().openBrowse(player, holder.page() - 1);
             else plugin.warpGui().openManage(player, holder.page() - 1);
             return;
@@ -63,6 +67,18 @@ public class GuiListener implements Listener {
         }
 
         PlayerWarp warp = optional.get();
+
+        if (holder.type() == WarpGuiHolder.Type.BROWSE && event.isRightClick()) {
+            if (!player.hasPermission("playerwarps.favorite")) {
+                Text.send(player, msg("prefix"), msg("no-permission"));
+                return;
+            }
+            boolean nowFavorite = plugin.favorites().toggle(player.getUniqueId(), warp.name());
+            Text.send(player, msg("prefix"), (nowFavorite ? msg("favorite-added") : msg("favorite-removed")).replace("%warp%", warp.name()));
+            plugin.warpGui().openBrowse(player, holder.page());
+            return;
+        }
+
         player.closeInventory();
 
         if (holder.type() == WarpGuiHolder.Type.MANAGE && event.isRightClick()) {

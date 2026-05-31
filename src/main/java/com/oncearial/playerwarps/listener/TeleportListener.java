@@ -30,6 +30,7 @@ public class TeleportListener implements Listener {
         int delay = plugin.getConfig().getInt("settings.teleport-delay-seconds", 3);
         if (delay <= 0) {
             player.teleport(target);
+            plugin.storage().incrementVisits(warp.name());
             Text.send(player, msg("prefix"), msg("teleported").replace("%warp%", warp.name()));
             return;
         }
@@ -39,6 +40,7 @@ public class TeleportListener implements Listener {
             pending.remove(player.getUniqueId());
             if (!player.isOnline()) return;
             player.teleport(target);
+            plugin.storage().incrementVisits(warp.name());
             Text.send(player, msg("prefix"), msg("teleported").replace("%warp%", warp.name()));
         }, delay * 20L);
         pending.put(player.getUniqueId(), new PendingTeleport(start, task));

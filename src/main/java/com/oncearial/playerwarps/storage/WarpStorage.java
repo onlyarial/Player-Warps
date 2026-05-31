@@ -2,6 +2,7 @@ package com.oncearial.playerwarps.storage;
 
 import com.oncearial.playerwarps.PlayerWarps;
 import com.oncearial.playerwarps.model.PlayerWarp;
+import com.oncearial.playerwarps.util.WarpNames;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,6 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class WarpStorage {
@@ -30,6 +32,7 @@ public class WarpStorage {
         for (String key : section.getKeys(false)) {
             try {
                 String path = "warps." + key + ".";
+                String name = yaml.getString(path + "name", key);
                 UUID owner = UUID.fromString(yaml.getString(path + "owner-uuid"));
                 String ownerName = yaml.getString(path + "owner-name", "Unknown");
                 String world = yaml.getString(path + "world");
@@ -40,8 +43,11 @@ public class WarpStorage {
                 float pitch = (float) yaml.getDouble(path + "pitch");
                 Material icon = Material.matchMaterial(yaml.getString(path + "icon", plugin.getConfig().getString("settings.default-icon", "ENDER_PEARL")));
                 if (icon == null) icon = Material.ENDER_PEARL;
+                String headOwner = yaml.getString(path + "head-owner", null);
+                String description = yaml.getString(path + "description", "");
+                long visits = yaml.getLong(path + "visits", 0L);
                 long createdAt = yaml.getLong(path + "created-at", System.currentTimeMillis());
-                warps.put(key.toLowerCase(), new PlayerWarp(key, owner, ownerName, world, x, y, z, yaw, pitch, icon, createdAt));
+                warps.put(WarpNames.normalize(name), new PlayerWarp(name, owner, ownerName, world, x, y, z, yaw, pitch, icon, headOwner, description, visits, createdAt));
             } catch (Exception ex) {
                 plugin.getLogger().warning("Could not load warp " + key + ": " + ex.getMessage());
             }
@@ -51,7 +57,8 @@ public class WarpStorage {
     public void save() {
         yaml.set("warps", null);
         for (PlayerWarp warp : warps.values()) {
-            String path = "warps." + warp.name() + ".";
+            String path = "warps." + storageKey(warp.name()) + ".";
+            yaml.set(path + "name", warp.name());
             yaml.set(path + "owner-uuid", warp.ownerUuid().toString());
             yaml.set(path + "owner-name", warp.ownerName());
             yaml.set(path + "world", warp.worldName());
@@ -61,6 +68,9 @@ public class WarpStorage {
             yaml.set(path + "yaw", warp.yaw());
             yaml.set(path + "pitch", warp.pitch());
             yaml.set(path + "icon", warp.icon().name());
+            yaml.set(path + "head-owner", warp.headOwner());
+            yaml.set(path + "description", warp.description());
+            yaml.set(path + "visits", warp.visits());
             yaml.set(path + "created-at", warp.createdAt());
         }
         try {
@@ -71,12 +81,12 @@ public class WarpStorage {
     }
 
     public Collection<PlayerWarp> getWarps() { return Collections.unmodifiableCollection(warps.values()); }
-    public Optional<PlayerWarp> getWarp(String name) { return Optional.ofNullable(warps.get(name.toLowerCase())); }
-    public boolean exists(String name) { return warps.containsKey(name.toLowerCase()); }
+    public Optional<PlayerWarp> getWarp(String name) { return Optional.ofNullable(warps.get(WarpNames.normalize(name))); }
+    public boolean exists(String name) { return warps.containsKey(WarpNames.normalize(name)); }
 
-    public void addWarp(PlayerWarp warp) { warps.put(warp.name(), warp); save(); }
-    public void removeWarp(String name) { warps.remove(name.toLowerCase()); save(); }
-    public void replaceWarp(String oldName, PlayerWarp warp) { warps.remove(oldName.toLowerCase()); warps.put(warp.name(), warp); save(); }
+    public void addWarp(PlayerWarp warp) { warps.put(WarpNames.normalize(warp.name()), warp); save(); }
+    public void removeWarp(String name) { warps.remove(WarpNames.normalize(name)); plugin.favorites().removeWarp(name); plugin.featured().removeWarp(name); save(); }
+    public void replaceWarp(String oldName, PlayerWarp warp) { warps.remove(WarpNames.normalize(oldName)); warps.put(WarpNames.normalize(warp.name()), warp); if (!WarpNames.normalize(oldName).equals(WarpNames.normalize(warp.name()))) { plugin.favorites().renameWarp(oldName, warp.name()); plugin.featured().renameWarp(oldName, warp.name()); } save(); }
 
     public int countOwned(UUID owner) {
         int count = 0;
@@ -84,9 +94,20 @@ public class WarpStorage {
         return count;
     }
 
+    public void incrementVisits(String name) {
+        PlayerWarp warp = warps.get(WarpNames.normalize(name));
+        if (warp == null) return;
+        warps.put(WarpNames.normalize(name), warp.withVisits(warp.visits() + 1));
+        save();
+    }
+
     public List<PlayerWarp> ownedBy(UUID owner) {
         List<PlayerWarp> owned = new ArrayList<>();
         for (PlayerWarp warp : warps.values()) if (warp.ownerUuid().equals(owner)) owned.add(warp);
         return owned;
+    }
+
+    private String storageKey(String name) {
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(WarpNames.normalize(name).getBytes(StandardCharsets.UTF_8));
     }
 }
