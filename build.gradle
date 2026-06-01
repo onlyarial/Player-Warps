@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.oncearial'
-version = '1.0.2'
+version = '1.2.0'
 
 // This keeps the final jar named PlayerWarps-1.2.0.jar
 archivesBaseName = 'PlayerWarps'
