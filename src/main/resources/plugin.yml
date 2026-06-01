@@ -22,6 +22,8 @@ permissions:
     default: true
   playerwarps.description:
     default: true
+  playerwarps.feature:
+    default: true
   playerwarps.setfeatured:
     default: true
   playerwarps.admin:

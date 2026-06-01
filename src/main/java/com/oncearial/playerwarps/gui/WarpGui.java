@@ -151,7 +151,7 @@ public class WarpGui {
 
         List<String> lore = new ArrayList<>();
         for (String line : plugin.guiConfig().getStringList(path + ".lore")) {
-            lore.add(Text.color(warpPlaceholders(line, warp, viewer)));
+            lore.addAll(warpLoreLines(line, warp, viewer));
         }
         meta.setLore(lore);
 
@@ -161,6 +161,22 @@ public class WarpGui {
         meta.getPersistentDataContainer().set(new NamespacedKey(plugin, "warp_name"), PersistentDataType.STRING, warp.name());
         item.setItemMeta(meta);
         return item;
+    }
+
+    private List<String> warpLoreLines(String input, PlayerWarp warp, Player viewer) {
+        if (!input.contains("%description%")) {
+            return List.of(Text.color(warpPlaceholders(input, warp, viewer)));
+        }
+
+        List<String> descriptionLines = warp.descriptionLines().isEmpty()
+                ? List.of(plugin.guiConfig().getString("placeholders.no-description", "&7No description set."))
+                : warp.descriptionLines();
+
+        List<String> lines = new ArrayList<>();
+        for (String descriptionLine : descriptionLines) {
+            lines.add(Text.color(warpPlaceholders(input.replace("%description%", descriptionLine), warp, viewer)));
+        }
+        return lines;
     }
 
     private String warpPlaceholders(String input, PlayerWarp warp, Player viewer) {

@@ -1,10 +1,13 @@
 settings:
   max-warps-per-player: 3
   max-warp-name-length: 32
+  max-description-lines: 8
+  max-description-line-length: 80
   teleport-delay-seconds: 3
   cancel-teleport-on-move: true
   allow-cross-world: true
   default-icon: "ENDER_PEARL"
+  feature-confirmation: true
 
   # Extra commands that open the public Player Warps GUI.
   gui-aliases:
@@ -28,7 +31,7 @@ costs:
     - material: EXPERIENCE_BOTTLE
       amount: 16
 
-  # Cost to run /pwarp setfeatured <name>.
+  # Cost to run /pwarp feature <name>.
   # Admins with playerwarps.admin bypass this cost.
   featured-cost:
     - material: DIAMOND
@@ -46,8 +49,8 @@ messages:
   usage-delete: "&cUsage: /pwarp delete <name>"
   usage-rename: "&cUsage: /pwarp rename <oldName> <newName> &7Example: &e/pwarp rename My-Warp &#ff66ccThis-Is-A-Warp"
   usage-favorite: "&cUsage: /pwarp favorite <name>"
-  usage-description: "&cUsage: /pwarp desc <name> <description>"
-  usage-setfeatured: "&cUsage: /pwarp setfeatured <name>"
+  usage-description: "&cUsage: /pwarp desc <warp> <add|set> [line#] <message>"
+  usage-feature: "&cUsage: /pwarp feature <name>"
   warp-created: "&aCreated warp &e%warp%&a."
   warp-deleted: "&aDeleted warp &e%warp%&a."
   warp-renamed: "&aRenamed &e%old% &ato &e%new%&a."
@@ -66,6 +69,12 @@ messages:
   favorite-removed: "&cRemoved &e%warp% &cfrom your favorites."
   featured-cost-missing: "&cYou need: &e%cost% &cto feature a warp."
   featured-cost-taken: "&aFeatured cost paid: &e%cost%&a."
+  feature-confirm: "&eFeature &f%warp% &efor &f%cost%&e? Run &f/pwarp feature %warp% &eagain within 30 seconds to confirm."
   description-set: "&aUpdated description for &e%warp%&a."
+  description-added: "&aAdded description line &e%line% &afor &e%warp%&a."
+  description-line-set: "&aSet description line &e%line% &afor &e%warp%&a."
+  description-lines-limit: "&cThat warp already has the maximum of &e%max% &cdescription lines."
+  invalid-description-line: "&cDescription lines cannot be empty or longer than the configured limit."
+  invalid-description-line-number: "&cChoose a line number from &e1 &cto &e%max%&c."
   featured-set: "&aSet &e%warp% &aas a featured warp."
   featured-already: "&e%warp% &cis already featured."

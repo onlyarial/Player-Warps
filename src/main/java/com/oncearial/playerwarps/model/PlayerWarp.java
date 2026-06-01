@@ -5,6 +5,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 public class PlayerWarp {
@@ -16,7 +19,7 @@ public class PlayerWarp {
     private final float yaw, pitch;
     private final Material icon;
     private final String headOwner;
-    private final String description;
+    private final List<String> descriptionLines;
     private final long visits;
     private final long createdAt;
 
@@ -29,6 +32,10 @@ public class PlayerWarp {
     }
 
     public PlayerWarp(String name, UUID ownerUuid, String ownerName, String worldName, double x, double y, double z, float yaw, float pitch, Material icon, String headOwner, String description, long visits, long createdAt) {
+        this(name, ownerUuid, ownerName, worldName, x, y, z, yaw, pitch, icon, headOwner, description == null || description.isBlank() ? List.of() : List.of(description), visits, createdAt);
+    }
+
+    public PlayerWarp(String name, UUID ownerUuid, String ownerName, String worldName, double x, double y, double z, float yaw, float pitch, Material icon, String headOwner, List<String> descriptionLines, long visits, long createdAt) {
         this.name = name;
         this.ownerUuid = ownerUuid;
         this.ownerName = ownerName;
@@ -40,7 +47,7 @@ public class PlayerWarp {
         this.pitch = pitch;
         this.icon = icon;
         this.headOwner = headOwner;
-        this.description = description == null ? "" : description;
+        this.descriptionLines = cleanDescriptionLines(descriptionLines);
         this.visits = Math.max(0, visits);
         this.createdAt = createdAt;
     }
@@ -56,7 +63,8 @@ public class PlayerWarp {
     public float pitch() { return pitch; }
     public Material icon() { return icon; }
     public String headOwner() { return headOwner; }
-    public String description() { return description; }
+    public String description() { return String.join("\n", descriptionLines); }
+    public List<String> descriptionLines() { return Collections.unmodifiableList(descriptionLines); }
     public long visits() { return visits; }
     public long createdAt() { return createdAt; }
 
@@ -67,18 +75,33 @@ public class PlayerWarp {
     }
 
     public PlayerWarp renamed(String newName) {
-        return new PlayerWarp(newName, ownerUuid, ownerName, worldName, x, y, z, yaw, pitch, icon, headOwner, description, visits, createdAt);
+        return new PlayerWarp(newName, ownerUuid, ownerName, worldName, x, y, z, yaw, pitch, icon, headOwner, descriptionLines, visits, createdAt);
     }
 
     public PlayerWarp withIcon(Material newIcon, String newHeadOwner) {
-        return new PlayerWarp(name, ownerUuid, ownerName, worldName, x, y, z, yaw, pitch, newIcon, newHeadOwner, description, visits, createdAt);
+        return new PlayerWarp(name, ownerUuid, ownerName, worldName, x, y, z, yaw, pitch, newIcon, newHeadOwner, descriptionLines, visits, createdAt);
     }
 
     public PlayerWarp withDescription(String newDescription) {
-        return new PlayerWarp(name, ownerUuid, ownerName, worldName, x, y, z, yaw, pitch, icon, headOwner, newDescription, visits, createdAt);
+        return withDescriptionLines(newDescription == null || newDescription.isBlank() ? List.of() : List.of(newDescription));
+    }
+
+    public PlayerWarp withDescriptionLines(List<String> newDescriptionLines) {
+        return new PlayerWarp(name, ownerUuid, ownerName, worldName, x, y, z, yaw, pitch, icon, headOwner, newDescriptionLines, visits, createdAt);
     }
 
     public PlayerWarp withVisits(long newVisits) {
-        return new PlayerWarp(name, ownerUuid, ownerName, worldName, x, y, z, yaw, pitch, icon, headOwner, description, newVisits, createdAt);
+        return new PlayerWarp(name, ownerUuid, ownerName, worldName, x, y, z, yaw, pitch, icon, headOwner, descriptionLines, newVisits, createdAt);
+    }
+
+    private static List<String> cleanDescriptionLines(List<String> lines) {
+        if (lines == null || lines.isEmpty()) return List.of();
+
+        List<String> cleaned = new ArrayList<>();
+        for (String line : lines) {
+            if (line == null) continue;
+            cleaned.add(line);
+        }
+        return List.copyOf(cleaned);
     }
 }

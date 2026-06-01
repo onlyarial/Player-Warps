@@ -44,10 +44,10 @@ public class WarpStorage {
                 Material icon = Material.matchMaterial(yaml.getString(path + "icon", plugin.getConfig().getString("settings.default-icon", "ENDER_PEARL")));
                 if (icon == null) icon = Material.ENDER_PEARL;
                 String headOwner = yaml.getString(path + "head-owner", null);
-                String description = yaml.getString(path + "description", "");
+                List<String> descriptionLines = descriptionLines(path + "description");
                 long visits = yaml.getLong(path + "visits", 0L);
                 long createdAt = yaml.getLong(path + "created-at", System.currentTimeMillis());
-                warps.put(WarpNames.normalize(name), new PlayerWarp(name, owner, ownerName, world, x, y, z, yaw, pitch, icon, headOwner, description, visits, createdAt));
+                warps.put(WarpNames.normalize(name), new PlayerWarp(name, owner, ownerName, world, x, y, z, yaw, pitch, icon, headOwner, descriptionLines, visits, createdAt));
             } catch (Exception ex) {
                 plugin.getLogger().warning("Could not load warp " + key + ": " + ex.getMessage());
             }
@@ -69,7 +69,7 @@ public class WarpStorage {
             yaml.set(path + "pitch", warp.pitch());
             yaml.set(path + "icon", warp.icon().name());
             yaml.set(path + "head-owner", warp.headOwner());
-            yaml.set(path + "description", warp.description());
+            yaml.set(path + "description", warp.descriptionLines());
             yaml.set(path + "visits", warp.visits());
             yaml.set(path + "created-at", warp.createdAt());
         }
@@ -109,5 +109,13 @@ public class WarpStorage {
 
     private String storageKey(String name) {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(WarpNames.normalize(name).getBytes(StandardCharsets.UTF_8));
+    }
+
+    private List<String> descriptionLines(String path) {
+        if (yaml.isList(path)) return yaml.getStringList(path);
+
+        String description = yaml.getString(path, "");
+        if (description == null || description.isBlank()) return List.of();
+        return Arrays.asList(description.split("\\R", -1));
     }
 }
