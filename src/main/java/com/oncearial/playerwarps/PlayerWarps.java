@@ -8,6 +8,7 @@ import com.oncearial.playerwarps.listener.TeleportListener;
 import com.oncearial.playerwarps.storage.WarpStorage;
 import com.oncearial.playerwarps.storage.FavoriteStorage;
 import com.oncearial.playerwarps.storage.FeaturedStorage;
+import com.oncearial.playerwarps.update.UpdateChecker;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +21,7 @@ public final class PlayerWarps extends JavaPlugin {
     private FavoriteStorage favorites;
     private FeaturedStorage featured;
     private TeleportListener teleportListener;
+    private UpdateChecker updateChecker;
     private File guiFile;
     private FileConfiguration guiConfig;
 
@@ -39,6 +41,7 @@ public final class PlayerWarps extends JavaPlugin {
         this.storage.load();
         this.warpGui = new WarpGui(this);
         this.teleportListener = new TeleportListener(this);
+        this.updateChecker = new UpdateChecker(this);
 
         PWarpCommand command = new PWarpCommand(this);
         getCommand("pwarp").setExecutor(command);
@@ -47,6 +50,8 @@ public final class PlayerWarps extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new GuiListener(this), this);
         getServer().getPluginManager().registerEvents(new AliasListener(this), this);
         getServer().getPluginManager().registerEvents(teleportListener, this);
+        getServer().getPluginManager().registerEvents(updateChecker, this);
+        updateChecker.checkAsync();
         getLogger().info("PlayerWarps enabled with " + storage.getWarps().size() + " warps.");
     }
 

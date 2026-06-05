@@ -39,6 +39,11 @@ costs:
     - material: EXPERIENCE_BOTTLE
       amount: 32
 
+update-checker:
+  enabled: true
+  log-failures: true
+  github-api-url: "https://api.github.com/repos/onlyarial/Player-Warps/releases/latest"
+
 messages:
   prefix: "&#8B5E3C&lPlayerWarps &8» &f"
   no-permission: "&cYou do not have permission."
@@ -78,3 +83,4 @@ messages:
   invalid-description-line-number: "&cChoose a line number from &e1 &cto &e%max%&c."
   featured-set: "&aSet &e%warp% &aas a featured warp."
   featured-already: "&e%warp% &cis already featured."
+  update-available: "&eA newer PlayerWarps version is available: &f%version%&e. Download: &f%url%"
