@@ -3,6 +3,8 @@ version: ${version}
 main: com.oncearial.playerwarps.PlayerWarps
 api-version: '1.21'
 author: OnceArial
+description: Player warps for Paper 1.21.1 through 26.2
+website: https://github.com/onlyarial/Player-Warps
 folia-supported: false
 commands:
   pwarp:
