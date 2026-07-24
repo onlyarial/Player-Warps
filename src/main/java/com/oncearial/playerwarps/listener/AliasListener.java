@@ -38,5 +38,5 @@ public class AliasListener implements Listener {
         }
     }
 
-    private String msg(String key) { return plugin.getConfig().getString("messages." + key, key); }
+    private String msg(String key) { return plugin.message(key); }
 }

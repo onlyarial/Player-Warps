@@ -25,14 +25,18 @@ public final class PlayerWarps extends JavaPlugin {
     private UpdateChecker updateChecker;
     private File guiFile;
     private FileConfiguration guiConfig;
+    private File messagesFile;
+    private FileConfiguration messagesConfig;
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        migrateConfig();
         saveResource("warps.yml", false);
         saveResource("gui.yml", false);
+        saveResource("messages.yml", false);
+        migrateMessagesConfig();
         reloadGuiConfig();
+        reloadMessagesConfig();
 
         this.favorites = new FavoriteStorage(this);
         this.favorites.load();
@@ -67,6 +71,7 @@ public final class PlayerWarps extends JavaPlugin {
     public void reloadEverything() {
         reloadConfig();
         reloadGuiConfig();
+        reloadMessagesConfig();
         storage.load();
         favorites.load();
         featured.load();
@@ -77,29 +82,39 @@ public final class PlayerWarps extends JavaPlugin {
         guiConfig = YamlConfiguration.loadConfiguration(guiFile);
     }
 
-    private void migrateConfig() {
+    public void reloadMessagesConfig() {
+        messagesFile = new File(getDataFolder(), "messages.yml");
+        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+    }
+
+    private void migrateMessagesConfig() {
         File configFile = new File(getDataFolder(), "config.yml");
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-        boolean changed = false;
+        File messagesFile = new File(getDataFolder(), "messages.yml");
+        FileConfiguration messages = YamlConfiguration.loadConfiguration(messagesFile);
 
-        changed |= setDefault(config, "messages.usage-seticon", "&cUsage: /pwarp seticon <name>");
-        changed |= setDefault(config, "messages.icon-updated", "&aUpdated icon for &e%warp%&a.");
-
-        if (!changed) return;
-
-        try {
-            config.save(configFile);
-            reloadConfig();
-            getLogger().info("Added missing config options to config.yml.");
-        } catch (IOException ex) {
-            getLogger().warning("Could not save migrated config.yml: " + ex.getMessage());
+        if (config.isConfigurationSection("messages")) {
+            for (String key : config.getConfigurationSection("messages").getKeys(false)) {
+                messages.set("messages." + key, config.get("messages." + key));
+            }
+            config.set("messages", null);
+            try {
+                messages.save(messagesFile);
+                config.save(configFile);
+                reloadConfig();
+                getLogger().info("Moved messages from config.yml to messages.yml.");
+            } catch (IOException ex) {
+                getLogger().warning("Could not migrate messages.yml: " + ex.getMessage());
+            }
         }
     }
 
-    private boolean setDefault(FileConfiguration config, String path, Object value) {
-        if (config.contains(path)) return false;
-        config.set(path, value);
-        return true;
+    public String message(String key) {
+        return messagesConfig.getString("messages." + key, key);
+    }
+
+    public FileConfiguration messagesConfig() {
+        return messagesConfig;
     }
 
     public FileConfiguration guiConfig() { return guiConfig; }

@@ -1,0 +1,77 @@
+messages:
+  prefix: "&#8B5E3C&lPlayerWarps &8» &f"
+  no-permission: "&cYou do not have permission."
+  player-only: "&cOnly players can use this command."
+  reloaded: "&aReloaded config, messages, GUI, and warps."
+
+  usage-set: "&cUsage: /pwarp set <name>"
+  usage-warp: "&cUsage: /pwarp <name>"
+  usage-delete: "&cUsage: /pwarp delete <name>"
+  usage-rename: "&cUsage: /pwarp rename <oldName> <newName> &7Example: &e/pwarp rename My-Warp &#ff66ccThis-Is-A-Warp"
+  usage-seticon: "&cUsage: /pwarp seticon <name>"
+  usage-favorite: "&cUsage: /pwarp favorite <name>"
+  usage-description: "&cUsage: /pwarp desc <warp> <add|set> [line#] <message>"
+  usage-feature: "&cUsage: /pwarp feature <name>"
+
+  warp-created: "&aCreated warp &e%warp%&a."
+  warp-deleted: "&aDeleted warp &e%warp%&a."
+  warp-renamed: "&aRenamed &e%old% &ato &e%new%&a."
+  warp-not-found: "&cThat warp does not exist."
+  warp-exists: "&cA warp with that name already exists."
+  invalid-name: "&cWarp names can use uppercase letters, spaces, Unicode, & color codes, and &#RRGGBB hex colors. The visible name is too long or empty."
+  not-owner: "&cYou do not own that warp."
+  limit-reached: "&cYou have reached your player warp limit."
+
+  cost-missing: "&cYou need: &e%cost% &cto create a warp."
+  cost-taken: "&aCost paid: &e%cost%&a."
+  featured-cost-missing: "&cYou need: &e%cost% &cto feature a warp."
+  featured-cost-taken: "&aFeatured cost paid: &e%cost%&a."
+  feature-confirm: "&eFeature &f%warp% &efor &f%cost%&e? Run &f/pwarp feature %warp% &eagain within 30 seconds to confirm."
+
+  teleport-starting: "&aTeleporting to &e%warp% &ain %seconds%s. Do not move."
+  teleport-cancelled: "&cTeleport cancelled."
+  teleported: "&aTeleported to &e%warp%&a."
+  teleport-world-not-loaded: "&cThat warp's world is not loaded."
+  cross-world-disabled: "&cCross-world player warps are disabled."
+
+  no-warps: "&cThere are no player warps yet."
+  favorite-added: "&aAdded &e%warp% &ato your favorites."
+  favorite-removed: "&cRemoved &e%warp% &cfrom your favorites."
+
+  seticon-empty-hand: "&cHold the icon item in your main hand."
+  icon-updated: "&aUpdated icon for &e%warp%&a."
+
+  description-set: "&aUpdated description for &e%warp%&a."
+  description-added: "&aAdded description line &e%line% &afor &e%warp%&a."
+  description-line-set: "&aSet description line &e%line% &afor &e%warp%&a."
+  description-lines-limit: "&cThat warp already has the maximum of &e%max% &cdescription lines."
+  invalid-description-line: "&cDescription lines cannot be empty or longer than the configured limit."
+  invalid-description-line-number: "&cChoose a line number from &e1 &cto &e%max%&c."
+
+  featured-set: "&aSet &e%warp% &aas a featured warp."
+  featured-already: "&e%warp% &cis already featured."
+
+  update-available: "&eA newer PlayerWarps version is available: &f%version%&e. Download: &f%url%"
+
+  help:
+    page-1:
+      - "&8&m---------------- &6Player Warps Help &7(1/2) &8&m----------------"
+      - "&e/%label% &7- Open the public warps GUI."
+      - "&e/%label% <name> &7- Teleport to a warp."
+      - "&e/%label% set <name> &7- Create a warp at your location."
+      - "&e/%label% delete <name> &7- Delete one of your warps."
+      - "&e/%label% rename <old> <new> &7- Rename one of your warps."
+      - "&e/%label% seticon <name> &7- Set a warp icon from your hand."
+      - "&8Example: &e/%label% rename My-Warp &#ff66ccNew Spawn"
+      - "&7Next page: &e/%label% help 2"
+    page-2:
+      - "&8&m---------------- &6Player Warps Help &7(2/2) &8&m----------------"
+      - "&e/%label% desc <warp> add <message> &7- Add a description line."
+      - "&e/%label% desc <warp> set <line#> <message> &7- Set a description line."
+      - "&8Example: &e/%label% desc Spawn add &7Public farm and shops"
+      - "&8Example: &e/%label% desc Spawn set 2 &bNow with crates"
+      - "&e/%label% favorite <name> &7- Favorite or unfavorite a warp."
+      - "&e/%label% manage &7- Manage your warps."
+      - "&e/%label% list &7- Open the public warps GUI."
+      - "&e/%label% feature <name> &7- Put a warp in featured slots."
+      - "&e/%label% reload &7- Reload config, messages, GUI, and warp data."

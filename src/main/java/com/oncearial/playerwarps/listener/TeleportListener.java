@@ -22,9 +22,9 @@ public class TeleportListener implements Listener {
 
     public void startTeleport(Player player, PlayerWarp warp) {
         Location target = warp.location();
-        if (target == null) { Text.send(player, msg("prefix"), "&cThat warp's world is not loaded."); return; }
+        if (target == null) { Text.send(player, msg("prefix"), msg("teleport-world-not-loaded")); return; }
         if (!plugin.getConfig().getBoolean("settings.allow-cross-world", true) && !target.getWorld().equals(player.getWorld())) {
-            Text.send(player, msg("prefix"), "&cCross-world player warps are disabled."); return;
+            Text.send(player, msg("prefix"), msg("cross-world-disabled")); return;
         }
         cancel(player, false);
         int delay = plugin.getConfig().getInt("settings.teleport-delay-seconds", 3);
@@ -67,6 +67,6 @@ public class TeleportListener implements Listener {
         }
     }
 
-    private String msg(String key) { return plugin.getConfig().getString("messages." + key, key); }
+    private String msg(String key) { return plugin.message(key); }
     private record PendingTeleport(Location start, BukkitTask task) {}
 }

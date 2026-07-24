@@ -91,6 +91,6 @@ public class GuiListener implements Listener {
     }
 
     private String msg(String key) {
-        return plugin.getConfig().getString("messages." + key, key);
+        return plugin.message(key);
     }
 }

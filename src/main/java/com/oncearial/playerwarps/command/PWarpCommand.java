@@ -136,7 +136,7 @@ public class PWarpCommand implements CommandExecutor, TabCompleter {
             Text.send(player, prefix, msg("not-owner")); return;
         }
         ItemStack hand = player.getInventory().getItemInMainHand();
-        if (hand.getType().isAir()) { Text.send(player, prefix, "&cHold the icon item in your main hand."); return; }
+        if (hand.getType().isAir()) { Text.send(player, prefix, msg("seticon-empty-hand")); return; }
         String headOwner = null;
         if (hand.getType() == Material.PLAYER_HEAD || hand.getType() == Material.PLAYER_WALL_HEAD) {
             ItemMeta meta = hand.getItemMeta();
@@ -268,31 +268,16 @@ public class PWarpCommand implements CommandExecutor, TabCompleter {
         }
 
         if (page <= 1) {
-            sender.sendMessage(Text.color("&8&m---------------- &6Player Warps Help &7(1/2) &8&m----------------"));
-            sender.sendMessage(Text.color("&e/" + label + " &7- Open the public warps GUI."));
-            sender.sendMessage(Text.color("&e/" + label + " <name> &7- Teleport to a warp."));
-            sender.sendMessage(Text.color("&e/" + label + " set <name> &7- Create a warp at your location."));
-            sender.sendMessage(Text.color("&e/" + label + " delete <name> &7- Delete one of your warps."));
-            sender.sendMessage(Text.color("&e/" + label + " rename <old> <new> &7- Rename one of your warps."));
-            sender.sendMessage(Text.color("&e/" + label + " seticon <name> &7- Set a warp icon from your hand."));
-            sender.sendMessage(Text.color("&8Example: &e/" + label + " rename My-Warp &#ff66ccNew Spawn"));
-            sender.sendMessage(Text.color("&7Next page: &e/" + label + " help 2"));
+            sendHelpPage(sender, "messages.help.page-1", label);
             return;
         }
 
-        sender.sendMessage(Text.color("&8&m---------------- &6Player Warps &8&m----------------"));
-        sender.sendMessage(Text.color("&e/" + label + " desc <warp> add <message> &7- Add a description line."));
-        sender.sendMessage(Text.color("&e/" + label + " desc <warp> set <line#> <message> &7- Set a description line."));
-        sender.sendMessage(Text.color("&8Example: &e/" + label + " desc Spawn add &7Public farm and shops"));
-        sender.sendMessage(Text.color("&8Example: &e/" + label + " desc Spawn set 2 &bNow with crates"));
-        sender.sendMessage(Text.color("&e/" + label + " favorite <name> &7- Favorite or unfavorite a warp."));
-        sender.sendMessage(Text.color("&e/" + label + " manage &7- Manage your warps."));
-        sender.sendMessage(Text.color("&e/" + label + " list &7- Open the public warps GUI."));
-        if (sender.hasPermission("playerwarps.feature") || sender.hasPermission("playerwarps.setfeatured") || sender.hasPermission("playerwarps.admin")) {
-            sender.sendMessage(Text.color("&e/" + label + " feature <name> &7- Put a warp in featured slots."));
-        }
-        if (sender.hasPermission("playerwarps.admin")) {
-            sender.sendMessage(Text.color("&e/" + label + " reload &7- Reload config, GUI, and warp data."));
+        sendHelpPage(sender, "messages.help.page-2", label);
+    }
+
+    private void sendHelpPage(CommandSender sender, String path, String label) {
+        for (String line : plugin.messagesConfig().getStringList(path)) {
+            sender.sendMessage(Text.color(line.replace("%label%", label)));
         }
     }
 
@@ -405,22 +390,7 @@ public class PWarpCommand implements CommandExecutor, TabCompleter {
     private record DescriptionParts(String warpName, DescriptionAction action, int lineNumber, String description) {}
     private enum DescriptionAction { ADD, SET, REPLACE }
     private record PendingFeature(String normalizedWarpName, long expiresAt) {}
-    private String msg(String key) { return plugin.getConfig().getString("messages." + key, defaultMessage(key)); }
-
-    private String defaultMessage(String key) {
-        return switch (key) {
-            case "usage-seticon" -> "&cUsage: /pwarp seticon <name>";
-            case "icon-updated" -> "&aUpdated icon for &e%warp%&a.";
-            case "usage-feature" -> "&cUsage: /pwarp feature <name>";
-            case "feature-confirm" -> "&eFeature &f%warp% &efor &f%cost%&e? Run &f/pwarp feature %warp% &eagain within 30 seconds to confirm.";
-            case "description-added" -> "&aAdded description line &e%line% &afor &e%warp%&a.";
-            case "description-line-set" -> "&aSet description line &e%line% &afor &e%warp%&a.";
-            case "description-lines-limit" -> "&cThat warp already has the maximum of &e%max% &cdescription lines.";
-            case "invalid-description-line" -> "&cDescription lines cannot be empty or longer than the configured limit.";
-            case "invalid-description-line-number" -> "&cChoose a line number from &e1 &cto &e%max%&c.";
-            default -> key;
-        };
-    }
+    private String msg(String key) { return plugin.message(key); }
     @SuppressWarnings("unchecked")
     private List<ItemCosts.Cost> costs() { return ItemCosts.readCosts((List<Map<?, ?>>)(List<?>) plugin.getConfig().getMapList("costs.create-warp")); }
 
