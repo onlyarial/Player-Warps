@@ -128,7 +128,7 @@ public class PWarpCommand implements CommandExecutor, TabCompleter {
     private void setIcon(CommandSender sender, String[] args) {
         String prefix = msg("prefix");
         if (!(sender instanceof Player player)) { Text.send(sender, prefix, msg("player-only")); return; }
-        if (args.length < 2) { Text.send(player, prefix, "&cUsage: /pwarp seticon <name>"); return; }
+        if (args.length < 2) { Text.send(player, prefix, msg("usage-seticon")); return; }
         Optional<PlayerWarp> optional = plugin.storage().getWarp(WarpNames.join(args, 1));
         if (optional.isEmpty()) { Text.send(player, prefix, msg("warp-not-found")); return; }
         PlayerWarp warp = optional.get();
@@ -145,7 +145,7 @@ public class PWarpCommand implements CommandExecutor, TabCompleter {
             }
         }
         plugin.storage().replaceWarp(warp.name(), warp.withIcon(hand.getType(), headOwner));
-        Text.send(player, prefix, "&aUpdated icon for &e" + warp.name() + "&a.");
+        Text.send(player, prefix, msg("icon-updated").replace("%warp%", warp.name()));
     }
 
     private void favorite(CommandSender sender, String[] args) {
@@ -409,6 +409,8 @@ public class PWarpCommand implements CommandExecutor, TabCompleter {
 
     private String defaultMessage(String key) {
         return switch (key) {
+            case "usage-seticon" -> "&cUsage: /pwarp seticon <name>";
+            case "icon-updated" -> "&aUpdated icon for &e%warp%&a.";
             case "usage-feature" -> "&cUsage: /pwarp feature <name>";
             case "feature-confirm" -> "&eFeature &f%warp% &efor &f%cost%&e? Run &f/pwarp feature %warp% &eagain within 30 seconds to confirm.";
             case "description-added" -> "&aAdded description line &e%line% &afor &e%warp%&a.";

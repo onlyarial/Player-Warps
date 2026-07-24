@@ -44,7 +44,7 @@ PlayerWarps is built against the Paper 1.21.1 API for compatibility across the c
 The jar will be in:
 
 ```text
-build/libs/PlayerWarps-1.0.4.jar
+build/libs/PlayerWarps-1.0.5.jar
 ```
 
 ## Config notes

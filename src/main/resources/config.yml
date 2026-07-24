@@ -39,6 +39,11 @@ costs:
     - material: EXPERIENCE_BOTTLE
       amount: 32
 
+update-checker:
+  enabled: true
+  log-failures: true
+  github-api-url: "https://api.github.com/repos/onlyarial/Player-Warps/releases/latest"
+
 messages:
   prefix: "&#8B5E3C&lPlayerWarps &8» &f"
   no-permission: "&cYou do not have permission."
@@ -48,6 +53,7 @@ messages:
   usage-warp: "&cUsage: /pwarp <name>"
   usage-delete: "&cUsage: /pwarp delete <name>"
   usage-rename: "&cUsage: /pwarp rename <oldName> <newName> &7Example: &e/pwarp rename My-Warp &#ff66ccThis-Is-A-Warp"
+  usage-seticon: "&cUsage: /pwarp seticon <name>"
   usage-favorite: "&cUsage: /pwarp favorite <name>"
   usage-description: "&cUsage: /pwarp desc <warp> <add|set> [line#] <message>"
   usage-feature: "&cUsage: /pwarp feature <name>"
@@ -70,6 +76,7 @@ messages:
   featured-cost-missing: "&cYou need: &e%cost% &cto feature a warp."
   featured-cost-taken: "&aFeatured cost paid: &e%cost%&a."
   feature-confirm: "&eFeature &f%warp% &efor &f%cost%&e? Run &f/pwarp feature %warp% &eagain within 30 seconds to confirm."
+  icon-updated: "&aUpdated icon for &e%warp%&a."
   description-set: "&aUpdated description for &e%warp%&a."
   description-added: "&aAdded description line &e%line% &afor &e%warp%&a."
   description-line-set: "&aSet description line &e%line% &afor &e%warp%&a."
@@ -78,3 +85,4 @@ messages:
   invalid-description-line-number: "&cChoose a line number from &e1 &cto &e%max%&c."
   featured-set: "&aSet &e%warp% &aas a featured warp."
   featured-already: "&e%warp% &cis already featured."
+  update-available: "&eA newer PlayerWarps version is available: &f%version%&e. Download: &f%url%"
